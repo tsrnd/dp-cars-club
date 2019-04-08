@@ -4,6 +4,8 @@
   "description": "",
   "main": "dist/server.js",
   "scripts": {
+    "start": "node dist/server.js",
+    "build": "npm install -g typescript && tsc -p tsconfig.json",
     "build-development": "concurrently \"tsc -w\" \"nodemon -w './dist/**/*.js' dist/server.js\"",
     "test": "echo \"comming soon\""
   },
