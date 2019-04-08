@@ -10,8 +10,10 @@ script:
   - docker build -t cars-club:test -f dockerfiles/Test.Dockerfile .
   - docker run cars-club:test
 deploy:
-  branches:
-  only:
-    - develop
-  script:
-    - git push https://heroku:92e401a3-7be6-4850-bbdd-ff4a22e29e74@git.heroku.com/dev-cars-club.git HEAD:master
+  provider: heroku
+  api_key:
+    master: 92e401a3-7be6-4850-bbdd-ff4a22e29e74
+    develop: 92e401a3-7be6-4850-bbdd-ff4a22e29e74
+  app:
+    master: dev-cars-club
+    production: cars-club
