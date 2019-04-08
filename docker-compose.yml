@@ -1,0 +1,24 @@
+version: '3'
+services:
+  mongodb:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/DB.Dockerfile
+    container_name: mongo_${TAG}
+    image: mongo
+    ports:
+      - 27017:27017
+  node-app:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/App.Dockerfile
+    container_name: node_app
+    image: nodeapp
+    ports:
+      - 3001:3001
+    volumes:
+      - ./:/node/dp-cars-club
+    links:
+      - mongodb:db
+    env_file:
+      - .env      

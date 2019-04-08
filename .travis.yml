@@ -1,0 +1,17 @@
+dist: xenial
+language: node_js
+node_js:
+  - '10.15'
+services:
+  - docker
+install:
+  - cp .env.example .env
+script:
+  - docker build -t cars-club:test -f dockerfiles/Test.Dockerfile .
+  - docker run cars-club:test
+deploy:
+  branches:
+  only:
+    - develop
+  script:
+    - git push https://heroku:92e401a3-7be6-4850-bbdd-ff4a22e29e74@git.heroku.com/dev-cars-club.git HEAD:master
