@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: ./dockerfiles/DB.Dockerfile
-    container_name: mongo
+    container_name: mongo_${TAG}
     image: mongo
     ports:
       - 27017:27017
@@ -21,5 +21,4 @@ services:
     links:
       - mongodb:db
     env_file:
-      - .env
-      
+      - .env      

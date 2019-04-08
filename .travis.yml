@@ -4,7 +4,8 @@ node_js:
   - '10.15'
 services:
   - docker
-# install:
-#   - cp .env.example .env
+install:
+  - cp .env.example .env
 script:
-  - echo 'someting'
+  - docker build -t cars-club:test -f dockerfiles/Test.Dockerfile .
+  - docker run cars-club:test
