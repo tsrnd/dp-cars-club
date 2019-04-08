@@ -15,5 +15,5 @@ deploy:
     master: 92e401a3-7be6-4850-bbdd-ff4a22e29e74
     develop: 92e401a3-7be6-4850-bbdd-ff4a22e29e74
   app:
-    master: dev-cars-club
-    develop: cars-club
+    master: cars-club
+    develop: dev-cars-club
