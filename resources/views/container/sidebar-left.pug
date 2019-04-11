@@ -1,0 +1,40 @@
+.col-md-2#side-bar-left
+    .panel.panel-default
+        .panel-body
+            h4 Friend requests
+            ul
+                li
+                    img(src='https://api.adorable.io/avatars/1') 
+                    a(href='#', style='display:inline-block') johndoe
+                    div(style="display:block;text-align:center;margin-bottom:20px")
+                    a.text-success(href='#') [accept] 
+                    a.text-danger(href='#') [decline]
+                li
+                    img(src='https://api.adorable.io/avatars/12') 
+                    a(href='#', style='display:inline-block') johndoe2
+                    div(style="display:block;text-align:center;margin-bottom:20px")
+                    a.text-success(href='#') [accept] 
+                    a.text-danger(href='#') [decline]
+    .panel.panel-default
+        .panel-body
+            h4 Friend list
+            ul
+                li
+                    img(src='https://api.adorable.io/avatars/1') 
+                    a(href='#', onclick="registerPopup('1', 'Ex1')") Ex1
+                li
+                    img(src='https://api.adorable.io/avatars/2') 
+                    a(href='#', onclick="registerPopup('2', 'Ex2')") Ex2
+                li
+                    img(src='https://api.adorable.io/avatars/3') 
+                    a(href='#', onclick="registerPopup('3', 'Ex3')") Ex3
+                li
+                    img(src='https://api.adorable.io/avatars/4') 
+                    a(href='#', onclick="registerPopup('4', 'Ex4')") Ex4
+    .panel.panel-default
+        .panel-body
+            h4 Group
+            ul
+                li
+                    img(src='https://api.adorable.io/avatars/10') 
+                    a(href='#', onclick="registerPopup('Group1', 'Group1')") Group1
