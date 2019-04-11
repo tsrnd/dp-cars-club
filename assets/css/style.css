@@ -1,1 +1,146 @@
-/* style here */
+/* styles */
+
+a {
+  color: #3b5998;
+}
+
+.navbar {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+
+.navbar-default {
+  background-color: #3b5998;
+  border-color: #3b5998;
+}
+
+.navbar-default .navbar-brand {
+  color: #fff;
+}
+
+.navbar-default .navbar-brand:focus,
+.navbar-default .navbar-brand:hover {
+  color: #fff;
+}
+
+.navbar-default .navbar-nav>li>a {
+  color: #fff;
+}
+
+.navbar-default .navbar-nav>li>a:focus,
+.navbar-default .navbar-nav>li>a:hover {
+  color: #fff;
+}
+
+.container {
+  margin-left: 22%;
+  width: 56%;
+  margin-top: 80px;
+}
+
+.navbar {
+  position: fixed;
+  width: 100%;
+  top: 0px;
+  z-index: 10;
+}
+
+#side-bar-right {
+  position: fixed;
+  width: 22%;
+  top: 80px;
+  right: 0px;
+  z-index: 1;
+}
+
+#side-bar-left {
+  position: fixed;
+  width: 22%;
+  top: 80px;
+  left: 0px;
+  z-index: 1;
+}
+
+#totalChatBox {
+  height: 400px;
+  margin-bottom: 15px;
+  overflow-y: scroll;
+}
+
+/*popup chat*/
+
+.popup-box {
+  display: none;
+  position: fixed;
+  bottom: 0px;
+  left: 17%;
+  height: 285px;
+  background-color: rgb(237, 239, 244);
+  width: 250px;
+  border: 1px solid #ddd;
+  border-radius: 5px 5px 0px 0px;
+  z-index: 2;
+}
+
+.popup-box .popup-head {
+  background-color: #3b5998;
+  padding: 5px;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  border-radius: 4px 4px 0px 0px;
+  clear: both;
+}
+
+.popup-box .popup-head .popup-head-left {
+  float: left;
+}
+
+.popup-box .popup-head .popup-head-right {
+  float: right;
+  opacity: 0.5;
+}
+
+.popup-box .popup-head .popup-head-right a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.popup-box .popup-messages {
+  height: 81%;
+  padding: 5px;
+  background-color: #fff;
+  overflow-y: scroll;
+}
+
+.popup-input {
+  width: 100%;
+  border: 0px;
+  border-top: 1px solid #ddd;
+  outline: none;
+}
+
+.panel-body ul {
+  padding: 5px;
+}
+
+.panel-body ul li {
+  margin: 5px;
+}
+
+.panel-body ul li img {
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
+}
+
+.chat-message img {
+  width: 25px;
+  height: 25px;
+}
+
+#newPost textarea,
+button {
+  height: 100px;
+}
