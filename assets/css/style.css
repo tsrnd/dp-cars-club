@@ -70,6 +70,7 @@ textarea {
   height: 400px;
   margin-bottom: 15px;
   overflow-y: scroll;
+  border-block-end-color: #333;
 }
 
 /*popup chat*/
@@ -144,10 +145,10 @@ textarea {
   height: 25px;
 }
 
-#newPost textarea,
-button {
+/* #newPost textarea, */
+/* button {
   height: 100px;
-}
+} */
 
 #popupLogin {
   display: block;
@@ -170,4 +171,36 @@ button {
   margin-top: 120px;
   padding: 20px;
   background: #fff;
+}
+
+.navbar-brand p {
+  color: white;
+}
+
+body {  
+  background-color: rgb(205, 205, 205);
+}
+
+.banner img {
+  visibility: hidden;
+}
+
+.banner {
+  background-image: url('/static/images/banner.jpg');
+}
+
+.chat-message, .panel-body img {
+  border-radius: 50%;
+}
+
+.border-left-section {
+  border-left: 4px solid #333;
+}
+
+.border-top-section {
+  border-top: 4px solid #333;
+}
+
+.btn-post-article {
+  border: 1px solid #333;
 }

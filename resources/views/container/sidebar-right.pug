@@ -1,6 +1,6 @@
 .col-md-2#side-bar-right
     .panel.panel-default
-        .panel-body
+        .panel-body.border-top-section 
             h4 Total chat
             .form-control#totalChatBox
                 .chat-message
@@ -17,4 +17,6 @@
                     img(src='https://api.adorable.io/avatars/1')
                     span.chat-all-message  
                         | :)
-            input.form-control(type='text', name='content', placeholder='Make a chat...')
+            input.form-control(type='text', name='content', placeholder='Say something...')
+    button.btn.btn-default.btn-lg.btn-block.btn-post-article(type='button', data-toggle='modal', data-target='#myModal') + Add a article
+
