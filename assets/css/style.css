@@ -4,6 +4,10 @@ a {
   color: #3b5998;
 }
 
+textarea {
+  resize: none;
+}
+
 .navbar {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
@@ -43,7 +47,7 @@ a {
   position: fixed;
   width: 100%;
   top: 0px;
-  z-index: 1;
+  z-index: 3;
 }
 
 #side-bar-right {
@@ -156,7 +160,7 @@ button {
   top: 0;
   width: 100%;
   text-align: center;
-  z-index: 3;
+  z-index: 4;
 }
 
 .login-wrapper {
