@@ -4,21 +4,28 @@ services:
     build:
       context: .
       dockerfile: ./dockerfiles/DB.Dockerfile
-    container_name: mongo_${TAG}
-    image: mongo
+    container_name: mongo
     ports:
       - 27017:27017
+  s3:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/S3.Dockerfile
+    container_name: s3
+    ports:
+      - 9000:9000
+    command: server /export
   node-app:
     build:
       context: .
       dockerfile: ./dockerfiles/App.Dockerfile
     container_name: node_app
-    image: nodeapp
     ports:
       - 3001:3001
     volumes:
       - ./:/node/dp-cars-club
     links:
       - mongodb:db
+      - s3:s3
     env_file:
       - .env      

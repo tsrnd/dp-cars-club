@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # check coding convention
 TSLINT_RESULT=`tslint -p tsconfig.json`
 if [ $? -ne 0 ]; then

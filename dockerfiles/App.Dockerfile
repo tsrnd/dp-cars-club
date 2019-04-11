@@ -12,3 +12,5 @@ WORKDIR ${DIR}
 RUN npm install -g concurrently typescript
 
 EXPOSE ${PORT}
+
+CMD npm run build-development
