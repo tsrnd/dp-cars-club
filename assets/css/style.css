@@ -204,3 +204,37 @@ body {
 .btn-post-article {
   border: 1px solid #333;
 }
+
+.input-container {
+  display: -ms-flexbox; /* IE10 */
+  display: flex;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.icon {
+  padding: 10px;
+  background: #333;
+  color: white;
+  min-width: 50px;
+  text-align: center;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  outline: none;
+}
+
+.input-field:focus {
+  border: 2px solid;
+}
+
+.modal-login {
+  width: 750px;
+  margin: auto;
+}
+
+.sign-form {
+  margin: auto;
+}
