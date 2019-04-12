@@ -10,7 +10,7 @@ git clone..
 - Download dependencies
 
 ```
-cd hello-node.ts
+cd dp-cars-club
 npm install
 ```
 
