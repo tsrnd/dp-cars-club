@@ -1,0 +1,35 @@
+//Popup Login
+#popupLogin.overlay(style="display:none")
+    .row.login-wrapper
+        .login-content
+            a.pull-right.closePopupLogin
+                | x
+            h3.text-center
+                | Welcome Car Club! 
+                br
+                small Car club description.
+            .row
+                .col-md-6
+                    h4 Login to start enjoying unlimited fun!
+                    // login form
+                    form(method='post', action='home.html')
+                        .form-group
+                        input.form-control(type='text', name='username', placeholder='Username')
+                        .form-group
+                        input.form-control(type='password', name='password', placeholder='Password')
+                        .form-group
+                        input.btn.btn-primary(type='submit', name='login', value='Login')
+                    // ./login form
+                .col-md-6
+                    h4 Don't have an account yet? Register!
+                    // register form
+                    form(method='post', action='home.html')
+                        .form-group
+                        input.form-control(type='text', name='username', placeholder='Username')
+                        .form-group
+                        input.form-control(type='text', name='location', placeholder='Location')
+                        .form-group
+                        input.form-control(type='password', name='password', placeholder='Password')
+                        .form-group
+                        input.btn.btn-success(type='submit', name='register', value='Register')
+                    // ./register form

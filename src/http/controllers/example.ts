@@ -19,9 +19,7 @@ const index = (req: Request, res: Response) => {
     //         console.log('Uploaded');
     //     }
     // });
-    return Http.SuccessResponse(res, {
-        msg: 'Welcome'
-    });
+    return res.render('index');
 };
 
 export { index };
