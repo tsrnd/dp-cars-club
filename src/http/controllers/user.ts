@@ -5,7 +5,6 @@ import { Md5 } from 'md5-typescript';
 import User from '../../models/user';
 import { validationResult } from 'express-validator/check';
 
-
 const signup = (req: Request, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -36,7 +35,33 @@ const signup = (req: Request, res: Response) => {
 };
 
 const signin = (req: Request, res: Response) => {
-    return res.render('index', { title: 'Welcome to cars club.' });
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return Http.BadRequestResponse(res, { errors: errors.array() });
+    }
+    User.findOne({
+        $or: [
+            { email: req.body.username_or_email },
+            { username: req.body.username_or_email }
+        ],
+        password: Md5.init(req.body.password)
+    })
+        .then((user: any) => {
+            if (!user) {
+                return Http.UnauthorizedResponse(res);
+            }
+            // create a token
+            const token = jwt.sign({ id: user.id }, 'secret', {
+                expiresIn: 86400 // expires in 24 hours
+            });
+            return Http.SuccessResponse(res, {
+                token: token
+            });
+        })
+        .catch((err: any) => {
+            console.error(err);
+            return Http.InternalServerResponse(res);
+        });
 };
 
 export { signup, signin };

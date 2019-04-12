@@ -7,7 +7,7 @@ export const validate = (type: String) => {
             return [
                 body('username').custom(d => {
                     if (d == undefined) {
-                        return Promise.reject('Username is require.');
+                        return Promise.reject('Username is required.');
                     }
                     if (!d.match(/^[a-zA-Z0-9]+$/)) {
                         return Promise.reject('Invalid username.');
@@ -21,9 +21,14 @@ export const validate = (type: String) => {
                 check('password')
                     .isLength({ min: 8 })
                     .withMessage('Password must be least 8 chars long.'),
-                check('password_confirm')
-                    .isLength({ min: 8 })
-                    .withMessage('Password confirm wrong.'),
+                body('password_confirm').custom((d, { req }) => {
+                    if (d !== req.body.password) {
+                        throw new Error(
+                            'Password confirmation does not match password'
+                        );
+                    }
+                    return true;
+                }),
                 check('email')
                     .isEmail()
                     .withMessage('Invalid email address format.'),
@@ -35,10 +40,17 @@ export const validate = (type: String) => {
                     });
                 })
             ];
-        case POST_LOGIN:
+        case POST_SIGN_IN:
             return [
-                check('email').isEmail(),
-                check('password').isLength({ min: 8 })
+                check('password')
+                    .isLength({ min: 8 })
+                    .withMessage('Password must be least 8 chars long.'),
+                check('username_or_email').custom(d => {
+                    if (!d) {
+                        throw new Error('Username or Email is required.');
+                    }
+                    return true;
+                })
             ];
         default:
             break;
@@ -46,4 +58,4 @@ export const validate = (type: String) => {
 };
 
 export const POST_SIGN_UP = 'POST_SIGN_UP';
-export const POST_LOGIN = 'POST_LOGIN';
+export const POST_SIGN_IN = 'POST_SIGN_IN';
