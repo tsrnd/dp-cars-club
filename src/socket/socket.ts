@@ -14,7 +14,7 @@ class Socket {
     }
 
     private config() {
-        var io = this.io;
+        const io = this.io;
 
         io.on('connection',
             SocketJWT.authorize({
@@ -26,7 +26,7 @@ class Socket {
             socket.on('chatAll', function (data: any) {
                 data.authID = socket.decoded_token.id;
                 chat.chatAll(io, socket, data);
-            })
+            });
         });
     }
 
@@ -35,4 +35,4 @@ class Socket {
     }
 }
 
-export default Socket
+export default Socket;

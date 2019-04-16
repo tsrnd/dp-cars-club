@@ -5,7 +5,7 @@ const chatAll = (endPoint: any, socket: any, data: any) => {
         if (error) {
             console.log(error);
         }
-        socket.emit('chatAll', data, auth, true)
+        socket.emit('chatAll', data, auth, true);
         socket.broadcast.emit('chatAll', data, auth, false);
     });
 };
