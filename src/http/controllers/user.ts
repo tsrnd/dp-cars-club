@@ -5,7 +5,6 @@ import { Md5 } from 'md5-typescript';
 import User from '../../models/user';
 import { validationResult } from 'express-validator/check';
 import * as config from 'config';
-import { db } from 'mongoose';
 
 const signup = (req: Request, res: Response) => {
     const errors = validationResult(req);
@@ -86,4 +85,8 @@ const signin = (req: Request, res: Response) => {
         });
 };
 
-export { signup, signin };
+const getProfile = (req: Request, res: Response) => {
+    res.render('');
+};
+
+export { signup, signin, getProfile };
