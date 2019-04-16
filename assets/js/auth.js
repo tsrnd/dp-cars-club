@@ -1,5 +1,4 @@
 $(document).ready(function() {
-    console.log(localStorage.auth);
     if (localStorage.auth != undefined) {
         auth = JSON.parse(localStorage.auth);
         afterAuth(auth);
@@ -70,6 +69,7 @@ $(document).ready(function() {
                 auth.user.username +
                 '</b>'
         });
+        $('#img-auth-avatar').attr('src', auth.user.avatar_url).show()
     }
 
     function requestSetting(token) {

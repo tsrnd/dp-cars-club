@@ -247,3 +247,9 @@ body {
 .sign-form button {
   margin-top: 15px;
 }
+
+.img-welcome {
+  width: 20px;
+  border-radius: 50%;
+  display: none;
+}
