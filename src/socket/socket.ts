@@ -1,7 +1,6 @@
 import * as SocketIO from 'socket.io';
 import * as SocketJWT from 'socketio-jwt';
 import * as chat from '../http/controllers/chat';
-import * as jwt from 'jsonwebtoken';
 
 class Socket {
     private server: any;
@@ -21,11 +20,12 @@ class Socket {
                 secret: 'secret',
                 required: false
             })
-        ).on('authenticated', function (socket: any) {
+        ).on('authenticated', async function (socket: any) {
+            const auth = await chat.getAuth(socket.decoded_token.id);
 
             socket.on('chatAll', function (data: any) {
-                data.authID = socket.decoded_token.id;
-                chat.chatAll(io, socket, data);
+                data.auth = auth;
+                chat.chatAll(socket, data);
             });
         });
     }

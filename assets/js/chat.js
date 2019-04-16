@@ -8,17 +8,17 @@ io.on('connect', function (socket) {
     });
 });
 
-function getFriendChat(data, auth) {
+function getFriendChat(data) {
     return `<div class="chat-message" style="text-align:right;">
-                <p style="font-size:11px;">${auth.username}</p>
+                <p style="font-size:11px;">${data.auth.username}</p>
                 <span class="chat-all-message">${data.message}</span>
-                <img style="width:25px;height:25px;" src="https://api.adorable.io/avatars/${auth._id}" />
+                <img style="width:25px;height:25px;" src="https://api.adorable.io/avatars/${data.auth._id}" />
             </div>`
 }
 
-function getSelfChat(data, auth) {
+function getSelfChat(data) {
     return `<div class="chat-message">
-                <img style="width:25px;height:25px;" src="https://api.adorable.io/avatars/${auth._id}" />
+                <img style="width:25px;height:25px;" src="https://api.adorable.io/avatars/${data.auth._id}" />
                 <span class="chat-all-message"> ${data.message}</span>
             </div>`
 }
@@ -36,13 +36,13 @@ $('#totalChatInput').keyup(function (event) {
     }
 })
 
-io.on('chatAll', (data, auth, self) => {
+io.on('chatAll', (data, self) => {
     var chatBox = $('#totalChatBox');
     var message = '';
     if (self) {
-        message = getSelfChat(data, auth);
+        message = getSelfChat(data);
     } else {
-        message = getFriendChat(data, auth);
+        message = getFriendChat(data);
     }
     chatBox.append(message);
     chatBox.animate({

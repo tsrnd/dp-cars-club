@@ -1,13 +1,22 @@
 import User from '../../models/user';
+import * as promise from 'bluebird';
 
-const chatAll = (endPoint: any, socket: any, data: any) => {
-    User.findById(data.authID, (error: any, auth: any) => {
-        if (error) {
-            console.log(error);
-        }
-        socket.emit('chatAll', data, auth, true);
-        socket.broadcast.emit('chatAll', data, auth, false);
-    });
+const userController = promise.promisifyAll(User);
+
+const chatAll = (socket: any, data: any) => {
+    socket.emit('chatAll', data, true);
+    socket.broadcast.emit('chatAll', data, false);
 };
 
-export { chatAll };
+const getAuth = async (id: string) => {
+    try {
+        return await userController.findById(id);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export {
+    chatAll,
+    getAuth
+};
