@@ -4,6 +4,8 @@ import * as jwt from 'jsonwebtoken';
 import { Md5 } from 'md5-typescript';
 import User from '../../models/user';
 import { validationResult } from 'express-validator/check';
+import * as config from 'config';
+import { db } from 'mongoose';
 
 const signup = (req: Request, res: Response) => {
     const errors = validationResult(req);
@@ -21,11 +23,20 @@ const signup = (req: Request, res: Response) => {
                 return Http.InternalServerResponse(res);
             }
             // create a token
-            const token = jwt.sign({ id: user.id }, 'secret', {
-                expiresIn: 86400 // expires in 24 hours
-            });
+            const token = jwt.sign(
+                { id: user._id },
+                config.get('jwt.secret_key'),
+                {
+                    expiresIn: config.get('jwt.expired')
+                }
+            );
             return Http.SuccessResponse(res, {
-                token: token
+                token: token,
+                user: {
+                    username: user.username,
+                    email: user.email,
+                    avatar_url: config.get('default-user-avatar')
+                }
             });
         })
         .catch((e: any) => {
@@ -51,11 +62,22 @@ const signin = (req: Request, res: Response) => {
                 return Http.UnauthorizedResponse(res);
             }
             // create a token
-            const token = jwt.sign({ id: user.id }, 'secret', {
-                expiresIn: 86400 // expires in 24 hours
-            });
+            const token = jwt.sign(
+                { id: user._id },
+                config.get('jwt.secret_key'),
+                {
+                    expiresIn: config.get('jwt.expired')
+                }
+            );
             return Http.SuccessResponse(res, {
-                token: token
+                token: token,
+                user: {
+                    username: user.username,
+                    email: user.email,
+                    avatar_url: user.avatar_url
+                        ? user.avatar_url
+                        : config.get('default-user-avatar')
+                }
             });
         })
         .catch((err: any) => {

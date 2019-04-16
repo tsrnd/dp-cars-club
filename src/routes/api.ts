@@ -12,7 +12,7 @@ router.use((req: express.Request, res: express.Response, next: () => void) => {
 
 // routes here
 router.get('/example', exampleController.index);
-router.get('/signup', validate(POST_SIGN_UP), userController.signup);
-router.get('/signin', validate(POST_SIGN_IN), userController.signin);
+router.post('/signup', validate(POST_SIGN_UP), userController.signup);
+router.post('/signin', validate(POST_SIGN_IN), userController.signin);
 
 export default router;
