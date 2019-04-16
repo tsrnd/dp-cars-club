@@ -56,6 +56,10 @@ $(document).ready(function() {
         });
     });
 
+    $('#btn-logout').click(() => {
+        logout();
+    });
+
     function afterAuth(auth) {
         $('#loginLink').hide();
         $('#txt-welcome')
@@ -69,7 +73,9 @@ $(document).ready(function() {
                 auth.user.username +
                 '</b>'
         });
-        $('#img-auth-avatar').attr('src', auth.user.avatar_url).show()
+        $('#img-auth-avatar')
+            .attr('src', auth.user.avatar_url)
+            .show();
     }
 
     function requestSetting(token) {
@@ -86,5 +92,13 @@ $(document).ready(function() {
             .slideUp(500, function() {
                 $('#alert-success').slideUp(500);
             });
+    }
+    function logout() {
+        localStorage.clear();
+        $('#loginLink').show();
+        $('#img-auth-avatar').hide();
+        $('#btn-profile').hide();
+        $('#txt-welcome').hide();
+        alertSuccess({content: 'You are not logged in, please login to use more features.'});
     }
 });

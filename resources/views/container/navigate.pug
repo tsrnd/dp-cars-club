@@ -12,8 +12,15 @@ nav.navbar.navbar-inverse
                 a#btn-profile(href='#', style='display: none;') Profile
             li
                 a#loginLink(href='#') Login
-            li
-                a#txt-welcome.text-light(style='display: none;')
+            li.dropdown
+                a.dropdown-toggle(data-toggle='dropdown', href='#')#txt-welcome.text-light(style='display: none;')
+                    |
+                    span.caret
+                ul.dropdown-menu
+                    li
+                    a.btn#btn-logout Logout
             li
                 a
                     img.img-welcome#img-auth-avatar(src='/static/images/img-default.png')
+
+
