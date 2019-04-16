@@ -3,7 +3,9 @@ var io = io('/');
 io.on('connect', function (socket) {
     io.emit('authenticate', {
         token: localStorage.auth
-    })
+    }).on('authenticated', function () {
+        $('#totalChatInput').attr('disabled', false);
+    });
 });
 
 function getFriendChat(data, auth) {
