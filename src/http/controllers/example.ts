@@ -19,7 +19,8 @@ const index = (req: Request, res: Response) => {
     //         console.log('Uploaded');
     //     }
     // });
-    return res.render('index');
+    console.log(req.headers.auth_user);
+    return res.end(JSON.stringify({ msg: 'welcome' }));
 };
 
 export { index };

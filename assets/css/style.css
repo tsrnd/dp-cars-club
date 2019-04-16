@@ -204,3 +204,52 @@ body {
 .btn-post-article {
   border: 1px solid #333;
 }
+
+.input-container {
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  margin-bottom: 3px;
+  margin-top: 15px;
+}
+
+.icon {
+  padding: 10px;
+  background: #333;
+  color: white;
+  min-width: 50px;
+  text-align: center;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  outline: none;
+}
+
+.input-field:focus {
+  border: 2px solid;
+}
+
+.modal-login {
+  width: 750px;
+  margin: auto;
+}
+
+.sign-form {
+  margin: auto;
+}
+
+.sign-form small {
+  display: none;
+}
+
+.sign-form button {
+  margin-top: 15px;
+}
+
+.img-welcome {
+  width: 20px;
+  border-radius: 50%;
+  display: none;
+}
