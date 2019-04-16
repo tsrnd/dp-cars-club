@@ -12,14 +12,15 @@ class DBConnection {
         mongoose.connect(
             `${DB_DRIVER}://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`,
             {
-                useNewUrlParser: true
+                useNewUrlParser: true,
+                useCreateIndex: true
             }
         );
         const db = mongoose.connection;
         db.on('error', (err: any) => {
             console.error('Connect error: ', err);
         });
-        db.once('open', function() {
+        db.once('open', function () {
             console.log('Mongodb connected success.');
         });
     }

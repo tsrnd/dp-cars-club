@@ -177,7 +177,7 @@ textarea {
   color: white;
 }
 
-body {  
+body {
   background-color: rgb(205, 205, 205);
 }
 
@@ -189,7 +189,8 @@ body {
   background-image: url('/static/images/banner.jpg');
 }
 
-.chat-message, .panel-body img {
+.chat-message,
+.panel-body img {
   border-radius: 50%;
 }
 
@@ -203,4 +204,8 @@ body {
 
 .btn-post-article {
   border: 1px solid #333;
+}
+
+.chat-message {
+  margin: 10px 0px;
 }

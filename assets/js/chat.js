@@ -1,3 +1,54 @@
+var io = io('/');
+
+io.on('connect', function (socket) {
+    io.emit('authenticate', {
+        token: localStorage.auth
+    })
+});
+
+function getFriendChat(data, auth) {
+    return `<div class="chat-message" style="text-align:right;">
+                <p style="font-size:11px;">${auth.username}</p>
+                <span class="chat-all-message">${data.message}</span>
+                <img style="width:25px;height:25px;" src="https://api.adorable.io/avatars/${auth._id}" />
+            </div>`
+}
+
+function getSelfChat(data, auth) {
+    return `<div class="chat-message">
+                <img style="width:25px;height:25px;" src="https://api.adorable.io/avatars/${auth._id}" />
+                <span class="chat-all-message"> ${data.message}</span>
+            </div>`
+}
+
+// CHAT ALL
+$('#totalChatInput').keyup(function (event) {
+    var input = $(this);
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    var inputMessage = input.val().trim();
+    if (keycode == '13' && inputMessage) {
+        io.emit('chatAll', {
+            message: inputMessage
+        })
+        input.val('');
+    }
+})
+
+io.on('chatAll', (data, auth, self) => {
+    var chatBox = $('#totalChatBox');
+    var message = '';
+    if (self) {
+        message = getSelfChat(data, auth);
+    } else {
+        message = getFriendChat(data, auth);
+    }
+    chatBox.append(message);
+    chatBox.animate({
+        scrollTop: chatBox.height() * 1000
+    }, 0);
+});
+
+// CHAT PRIVATE
 //this function can remove a array element.
 Array.remove = function (array, from, to) {
     var rest = array.slice((to || from) + 1 || array.length);
