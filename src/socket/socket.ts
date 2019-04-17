@@ -1,6 +1,7 @@
 import * as SocketIO from 'socket.io';
 import * as SocketJWT from 'socketio-jwt';
 import * as chat from '../http/controllers/chat';
+import * as config from 'config';
 
 class Socket {
     private server: any;
@@ -17,7 +18,7 @@ class Socket {
 
         io.on('connection',
             SocketJWT.authorize({
-                secret: 'secret',
+                secret: config.get('jwt.secret_key'),
                 required: false
             })
         ).on('authenticated', async function (socket: any) {
