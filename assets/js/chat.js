@@ -1,8 +1,9 @@
 var io = io('/');
 
 io.on('connect', function (socket) {
+    var token = localStorage.auth ? JSON.parse(localStorage.auth).token : null;
     io.emit('authenticate', {
-        token: localStorage.auth
+        token: token
     }).on('authenticated', function () {
         $('#totalChatInput').attr('disabled', false);
     });
