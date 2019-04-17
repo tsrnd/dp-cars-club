@@ -5,7 +5,7 @@ export interface IUser extends mongoose.Document {
     email: String;
     password: String;
     avatar_url?: any;
-    user_friends?: String;
+    user_friends?: any;
     created_at: Date;
     updated_at: Date;
     deleted_at?: Date;
@@ -27,7 +27,13 @@ const schema: any = new mongoose.Schema({
         required: true
     },
     avatar_url: String,
-    user_friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    user_friends: [{ 
+        _id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        },
+        status: Number
+    }],
     created_at: {
         type: Date,
         default: Date.now

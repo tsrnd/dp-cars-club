@@ -5,7 +5,7 @@ import { Md5 } from 'md5-typescript';
 import User from '../../models/user';
 import { validationResult } from 'express-validator/check';
 import * as config from 'config';
-import { db } from 'mongoose';
+import { Types } from 'mongoose';
 
 const signup = (req: Request, res: Response) => {
     const errors = validationResult(req);
@@ -86,4 +86,56 @@ const signin = (req: Request, res: Response) => {
         });
 };
 
-export { signup, signin };
+const addFriend = (req: Request, res: Response) => {
+    let authUser: any = req.headers.auth_user;
+    User.findOne({ username: req.params.username })
+        .then(result => {
+            if (result == null) {
+                return Http.NotFoundResponse(res, { msg: 'User not found' });
+            }
+            if (result._id.toString() == authUser._id) {
+                return Http.BadRequestResponse(res);
+            }
+
+            User.findOne({
+                _id: authUser._id,
+                user_friends: { $elemMatch: { _id: result._id } }
+            })
+                .then(data => {
+                    console.log(authUser._id);
+                    console.log(data);
+                    if (data) {
+                        return Http.SuccessResponse(res, { msg: 'Success' });
+                    }
+                    User.updateOne(
+                        { _id: Types.ObjectId(authUser._id) },
+                        {
+                            $push: {
+                                user_friends: {
+                                    _id: result._id,
+                                    status: 1
+                                }
+                            }
+                        }
+                    )
+                        .then(rs => {
+                            return Http.SuccessResponse(res, {
+                                msg: 'Success'
+                            });
+                        })
+                        .catch(e => {
+                            console.error(e);
+                        });
+                })
+                .catch(e => {
+                    console.error(e);
+                    return Http.InternalServerResponse(res);
+                });
+        })
+        .catch(e => {
+            console.error(e);
+            return Http.InternalServerResponse(res);
+        });
+};
+
+export { signup, signin, addFriend };
