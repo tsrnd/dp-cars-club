@@ -7,8 +7,20 @@ nav.navbar.navbar-inverse
             li.active
                 a(href='home.html') Home
             li
-                a(href='profile.html') Profile
+                a(href='') About us
+            li
+                a#btn-profile(href='#', style='display: none;') Profile
             li
                 a#loginLink(href='#') Login
+            li.dropdown
+                a.dropdown-toggle(data-toggle='dropdown', href='#')#txt-welcome.text-light(style='display: none;')
+                    |
+                    span.caret
+                ul.dropdown-menu
+                    li
+                    a.btn#btn-logout Logout
             li
-                a(href='#') Logout
+                a
+                    img.img-welcome#img-auth-avatar(src='/static/images/img-default.png')
+
+

@@ -1,35 +1,53 @@
 //Popup Login
 #popupLogin.overlay(style="display:none")
-    .row.login-wrapper
-        .login-content
-            a.pull-right.closePopupLogin
-                | x
-            h3.text-center
-                | Welcome Car Club! 
-                br
-                small Car club description.
-            .row
-                .col-md-6
-                    h4 Login to start enjoying unlimited fun!
-                    // login form
-                    form(method='post', action='home.html')
-                        .form-group
-                        input.form-control(type='text', name='username', placeholder='Username')
-                        .form-group
-                        input.form-control(type='password', name='password', placeholder='Password')
-                        .form-group
-                        input.btn.btn-primary(type='submit', name='login', value='Login')
-                    // ./login form
-                .col-md-6
-                    h4 Don't have an account yet? Register!
-                    // register form
-                    form(method='post', action='home.html')
-                        .form-group
-                        input.form-control(type='text', name='username', placeholder='Username')
-                        .form-group
-                        input.form-control(type='text', name='location', placeholder='Location')
-                        .form-group
-                        input.form-control(type='password', name='password', placeholder='Password')
-                        .form-group
-                        input.btn.btn-success(type='submit', name='register', value='Register')
-                    // ./register form
+  #modalLoginForm.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+  .modal-dialog.modal-login(role='document')
+    .modal-content
+      .modal-header.text-center
+        button.close.closePopupLogin(type='button', data-dismiss='modal', aria-label='Close')
+          span(aria-hidden='true') ×
+        h4.modal-title.w-100.font-weight-bold Welcome to Cars Club!
+        small Car club description.
+        br
+        .col-sm-6(style='padding-right:20px; border-right: 1px solid #ccc;')
+          h4 Sign In
+          hr
+          form.sign-form#signin-form
+            .input-container
+              i.fa.fa-user.icon
+              input.input-field(type='text', placeholder='Username or Email', name='signin-username_or_email')
+            .text-left.text-danger
+              small#err-signin-username_or_email
+            .input-container
+              i.fa.fa-key.icon
+              input.input-field(type='password', placeholder='Password', name='signin-password')
+            .text-left.text-danger
+              small#err-signin-password
+            .text-right
+              button.btn.btn-info#btn-signin(type='button') Sign In
+        .col-sm-6
+          h4 Sign Up
+          hr
+          form.sign-form#signup-form
+            .input-container
+              i.fa.fa-user.icon
+              input.input-field(type='text', placeholder='Username', name='signup-username')
+            .text-left.text-danger
+              small#err-signup-username
+            .input-container
+              i.fa.fa-user.icon
+              input.input-field(type='email', placeholder='Email', name='signup-email')
+            .text-left.text-danger
+              small#err-signup-email
+            .input-container
+              i.fa.fa-key.icon
+              input.input-field(type='password', placeholder='Password', name='signup-password')
+            .text-left.text-danger
+              small#err-signup-password
+            .input-container
+              i.fa.fa-key.icon
+              input.input-field(type='password', placeholder='Confirm Password', name='signup-password_confirm')
+            .text-left.text-danger
+              small#err-signup-password_confirm
+            .text-right
+              button.btn.btn-info#btn-signup(type='button') Sign Up
