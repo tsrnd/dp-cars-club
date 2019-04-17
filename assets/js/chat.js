@@ -1,4 +1,3 @@
-var io = io('/');
 
 io.on('connect', function (socket) {
     var token = localStorage.auth ? JSON.parse(localStorage.auth).token : null;
