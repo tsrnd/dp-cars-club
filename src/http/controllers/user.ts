@@ -101,7 +101,7 @@ const getProfile = async (req: Request, res: Response) => {
                     msg:
                         "Can't authenticate your account. Please, try sign in again."
                 });
-                console.log("Can't get auth user");
+                console.log("Can't get auth user", err);
             }
         }
     }

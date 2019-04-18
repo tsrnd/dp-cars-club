@@ -2,6 +2,10 @@ $(document).ready(function() {
     if (localStorage.auth != undefined) {
         auth = JSON.parse(localStorage.auth);
         afterAuth(auth);
+    } else {
+        $('#left-requests-list').html('This function requires <b>Sign In</b>.');
+        $('#left-friends-list').html('This function requires <b>Sign In</b>.');
+        $('#left-groups-list').html('This function requires <b>Sign In</b>.');
     }
     $('#btn-signin').click(() => {
         $.post({
@@ -61,21 +65,57 @@ $(document).ready(function() {
     });
 
     function afterAuth(auth) {
-        $('#loginLink').hide();
-        $('#txt-welcome')
-            .html('Hi, ' + auth.user.username)
-            .show();
-        $('#btn-profile').show();
         requestSetting(auth.token);
-        alertSuccess({
-            content:
-                'You have successfully logged in with <b>' +
-                auth.user.username +
-                '</b>'
+        $.get({
+            url: `/api/user/${auth.user.username}/profile`,
+            success: result => {
+                $('#loginLink').hide();
+                $('#txt-welcome')
+                    .html('Hi, ' + result.user.username)
+                    .show();
+                $('#btn-profile').show();
+                alertSuccess({
+                    content:
+                        'You have successfully logged in with <b>' +
+                        result.user.username +
+                        '</b>'
+                });
+                $('#img-auth-avatar')
+                    .attr('src', result.user.avatar_url)
+                    .show();
+                if (result.user.user_friends.length > 0) {
+                    $('#left-friends-list').html(
+                        getFriendListForLeftSideBar(result.user.user_friends)
+                    );
+                } else {
+                    $('#left-friends-list').html(
+                        "You don't have friends, let's find friends."
+                    );
+                }
+                $('#left-requests-list').html('Comming soon')
+                $('#left-groups-list').html('Comming soon')
+            },
+            error: err => {
+                if (err.status == 401) {
+                    alert('Your session has expired. Please try login again');
+                }
+            }
         });
-        $('#img-auth-avatar')
-            .attr('src', auth.user.avatar_url)
-            .show();
+    }
+
+    function getFriendListForLeftSideBar(data) {
+        d = '';
+        data.forEach((e, index) => {
+            d += `<li>
+                <img src="${
+                    e.avatar_url
+                }" /><a href="#" onclick="registerPopup('${index + 1}', '${
+                e.username
+            }')">${e.username}</a>
+            </li>`;
+        });
+
+        return d;
     }
 
     function requestSetting(token) {
