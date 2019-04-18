@@ -81,7 +81,7 @@ $(document).ready(function() {
     function requestSetting(token) {
         $.ajaxSetup({
             beforeSend: function(xhr) {
-                xhr.setRequestHeader('Authorization', 'Bearer' + token);
+                xhr.setRequestHeader('Authorization', 'Bearer ' + token);
             }
         });
     }
@@ -99,8 +99,8 @@ $(document).ready(function() {
         $('#img-auth-avatar').hide();
         $('#btn-profile').hide();
         $('#txt-welcome').hide();
-        alertSuccess({content: 'You are not logged in, please login to use more features.'});
+        alertSuccess({
+            content: 'You are not logged in, please login to use more features.'
+        });
     }
 });
-
-

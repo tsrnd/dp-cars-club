@@ -312,3 +312,9 @@ body {
   border-radius: 50%;
   margin-right: 10px;
 }
+
+.modal-large {
+  width: 800px;
+  margin: auto;
+  margin-top: 20px;
+}
