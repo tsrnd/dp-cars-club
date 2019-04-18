@@ -89,7 +89,9 @@ $(document).ready(function() {
                 <div class="col-sm-4 text-right">
                     <button class="btn btn-info" ${
                         data.isFriend ? 'disabled' : ''
-                    }>${data.isSelf ? 'Edit profile' : data.isFriend ? 'Is Friend' : '+ Add Friend'}</button>
+                    } onclick="${data.isSelf ? 'updateProfile(\'' + data.user.username + '\')' : data.isFriend ? '' : 'addFriend(\'' + data.user.username + '\', \'' + data.user.avatar_url + '\', this)'}">${data.isSelf ? 'Edit profile' : data.isFriend ? 'Is Friend' : '+ Add Friend'}</button>
+                    <br/>
+                    <small class='text-success' id='alert-profile-action'></small>
                 </div>
                 <div>
                     <div class='col-sm-8'>
