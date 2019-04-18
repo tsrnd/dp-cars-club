@@ -89,10 +89,10 @@ const signin = (req: Request, res: Response) => {
 };
 
 const addFriend = (req: Request, res: Response) => {
-    let authUser: any = req.headers.auth_user;
+    const authUser: any = req.headers.auth_user;
     User.findOne({ username: req.params.username })
         .then(result => {
-            if (result == null) {
+            if (result == undefined) {
                 return Http.NotFoundResponse(res, { msg: 'User not found' });
             }
             if (result._id.toString() == authUser._id) {
@@ -114,8 +114,8 @@ const addFriend = (req: Request, res: Response) => {
                         _id: req.params.id,
                         user_friends: { $elemMatch: { _id: authUser._id } }
                     }).then(data => {
-                        console.log("phat------" + data)
-                        if (data == null) {
+                        console.log('phat------' + data);
+                        if (data == undefined) {
                             // if other haven't add friend with user yet
                             User.updateOne(
                                 { _id: Types.ObjectId(authUser._id) },
@@ -161,15 +161,15 @@ const addFriend = (req: Request, res: Response) => {
                             User.updateOne(
                                 { _id: Types.ObjectId(result._id) },
                                 {
-                                    $push: { 
+                                    $push: {
                                         user_friends: {
-                                         _id: authUser._id,
-                                         status: 1
+                                            _id: authUser._id,
+                                            status: 1
                                         }
                                     }
                                 },
                                 { upsert: true }
-                             )
+                            )
                                 .then(rs => {
                                     return Http.SuccessResponse(res, {
                                         msg: 'Success'
@@ -192,4 +192,94 @@ const addFriend = (req: Request, res: Response) => {
         });
 };
 
-export { signup, signin, addFriend };
+const getProfile = async (req: Request, res: Response) => {
+    let authID = '';
+    const authorizationHeader = req.headers['authorization'];
+    if (authorizationHeader != undefined) {
+        const tmps = authorizationHeader.split(/Bearer /);
+        if (tmps.length > 1) {
+            const token = tmps[1];
+            try {
+                const decoded = jwt.verify(token, 'secret');
+                authID = decoded.id;
+            } catch (err) {
+                Http.UnauthorizedResponse(res, {
+                    msg:
+                        "Can't authenticate your account. Please, try sign in again."
+                });
+                console.log("Can't get auth user", err);
+            }
+        }
+    }
+
+    try {
+        const user = await User.aggregate([
+            {
+                $match: { username: req.params.username }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    username: 1,
+                    email: 1,
+                    avatar_url: 1,
+                    user_friends: {
+                        $filter: {
+                            input: '$user_friends',
+                            as: 'user_friend',
+                            cond: {
+                                $eq: ['$$user_friend.status', 1]
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'user_friends._id',
+                    foreignField: '_id',
+                    as: 'user_friends'
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    username: 1,
+                    email: 1,
+                    avatar_url: {
+                        $ifNull: [
+                            '$avatar_url',
+                            config.get('default-user-avatar')
+                        ]
+                    },
+                    'user_friends._id': 1,
+                    'user_friends.username': 1,
+                    'user_friends.email': 1,
+                    'user_friends.avatar_url': {
+                        $ifNull: [
+                            '$avatar_url',
+                            config.get('default-user-avatar')
+                        ]
+                    }
+                }
+            }
+        ]);
+        if (!user[0]) {
+            return Http.NotFoundResponse(res);
+        }
+        const isFriend = user[0].user_friends.find(element => {
+            return element._id == authID;
+        });
+        return Http.SuccessResponse(res, {
+            user: user[0],
+            isSelf: authID == user[0]._id ? true : false,
+            isFriend: !isFriend ? false : true
+        });
+    } catch (error) {
+        console.error(error);
+        return Http.InternalServerResponse(res);
+    }
+};
+
+export { signup, signin, getProfile, addFriend };

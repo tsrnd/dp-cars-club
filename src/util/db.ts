@@ -20,7 +20,7 @@ class DBConnection {
         db.on('error', (err: any) => {
             console.error('Connect error: ', err);
         });
-        db.once('open', function() {
+        db.once('open', function () {
             console.log('Mongodb connected success.');
         });
     }

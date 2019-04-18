@@ -27,13 +27,15 @@ const schema: any = new mongoose.Schema({
         required: true
     },
     avatar_url: String,
-    user_friends: [{ 
-        _id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
-        },
-        status: Number
-    }],
+    user_friends: [
+        {
+            _id: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User'
+            },
+            status: Number
+        }
+    ],
     created_at: {
         type: Date,
         default: Date.now

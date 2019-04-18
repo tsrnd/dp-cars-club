@@ -89,7 +89,7 @@ textarea {
 }
 
 .popup-box .popup-head {
-  background-color: #3b5998;
+  background-color: #333;
   padding: 5px;
   color: white;
   font-weight: bold;
@@ -177,7 +177,7 @@ textarea {
   color: white;
 }
 
-body {  
+body {
   background-color: rgb(205, 205, 205);
 }
 
@@ -189,7 +189,8 @@ body {
   background-image: url('/static/images/banner.jpg');
 }
 
-.chat-message, .panel-body img {
+.chat-message,
+.panel-body img {
   border-radius: 50%;
 }
 
@@ -203,6 +204,10 @@ body {
 
 .btn-post-article {
   border: 1px solid #333;
+}
+
+.chat-message {
+  margin: 10px 0px;
 }
 
 .input-container {
@@ -252,4 +257,69 @@ body {
   width: 20px;
   border-radius: 50%;
   display: none;
+}
+
+.navbar-right input {
+  margin-top: 5px;
+}
+.dropbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+#ip-search {
+  font-size: 14px;
+  padding: 4px;
+  margin-top: 9px;
+  margin-right: 30px;
+  width: 20rem;
+  -webkit-transition: all 0.7s ease 0s;
+  -moz-transition: all 0.7s ease 0s;
+  -o-transition: all 0.7s ease 0s;
+  transition: all 0.7s ease 0s;
+  direction: rtl
+}
+
+#ip-search:focus {
+  width: 40rem;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f6f6f6;
+  min-width: 40rem;
+  overflow: auto;
+  border: 1px solid #ddd;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown a:hover {background-color: #ddd;}
+
+.img-avatar-search {
+  width: 25px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.modal-large {
+  width: 800px;
+  margin: auto;
+  margin-top: 20px;
 }

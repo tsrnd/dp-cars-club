@@ -4,8 +4,12 @@ nav.navbar.navbar-inverse
             a.navbar-brand(href='index.html')
                 p.text-light Cars CLUB
         ul.nav.navbar-nav.navbar-right
+            li
+                .dropdown
+                    input#ip-search(type='text', placeholder='..Search')
+                    #search-dropdown.dropdown-content
             li.active
-                a(href='home.html') Home
+                a(href='') Home
             li
                 a(href='') About us
             li
@@ -13,7 +17,7 @@ nav.navbar.navbar-inverse
             li
                 a#loginLink(href='#') Login
             li.dropdown
-                a.dropdown-toggle(data-toggle='dropdown', href='#')#txt-welcome.text-light(style='display: none;')
+                a.dropdown-toggle#txt-welcome.text-light(style='display: none;',data-toggle='dropdown', href='#')
                     |
                     span.caret
                 ul.dropdown-menu
