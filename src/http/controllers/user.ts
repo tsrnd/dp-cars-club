@@ -5,7 +5,6 @@ import { Md5 } from 'md5-typescript';
 import User from '../../models/user';
 import { validationResult } from 'express-validator/check';
 import * as config from 'config';
-import { Types } from 'mongoose';
 
 const signup = (req: Request, res: Response) => {
     const errors = validationResult(req);
