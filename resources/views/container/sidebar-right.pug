@@ -3,20 +3,6 @@
         .panel-body.border-top-section 
             h4 Total chat
             .form-control#totalChatBox
-                .chat-message
-                    img(src='https://api.adorable.io/avatars/1')
-                    span.chat-all-message  
-                        | Hello
-                .chat-message(style='text-align:right;')
-                    p(style='font-size:11px')
-                    | Username
-                    span.chat-all-message
-                    | Hello 
-                    img(src='https://api.adorable.io/avatars/2')
-                .chat-message
-                    img(src='https://api.adorable.io/avatars/1')
-                    span.chat-all-message  
-                        | :)
-            input.form-control(type='text', name='content', placeholder='Say something...')
+            input.form-control#totalChatInput(type='text', name='content', placeholder='Say something...', disabled)
     button.btn.btn-default.btn-lg.btn-block.btn-post-article(type='button', data-toggle='modal', data-target='#myModal') + Add a article
 

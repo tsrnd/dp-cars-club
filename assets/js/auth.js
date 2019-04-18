@@ -1,3 +1,5 @@
+var io = io('/');
+
 $(document).ready(function() {
     if (localStorage.auth != undefined) {
         auth = JSON.parse(localStorage.auth);
@@ -13,6 +15,8 @@ $(document).ready(function() {
                 localStorage.auth = JSON.stringify(result);
                 $('#popupLogin').hide();
                 afterAuth(result);
+                io.disconnect();
+                io.connect();
             },
             error: result => {
                 if (result.status == 400) {
@@ -40,6 +44,8 @@ $(document).ready(function() {
                 localStorage.auth = JSON.stringify(result);
                 $('#popupLogin').hide();
                 afterAuth(result);
+                io.disconnect();
+                io.connect();
             },
             error: result => {
                 if (result.status == 400) {
@@ -57,7 +63,7 @@ $(document).ready(function() {
     });
 
     $('#btn-logout').click(() => {
-        logout();
+        location.reload(true);
     });
 
     function afterAuth(auth) {
@@ -93,12 +99,12 @@ $(document).ready(function() {
                 $('#alert-success').slideUp(500);
             });
     }
-    function logout() {
-        localStorage.clear();
-        $('#loginLink').show();
-        $('#img-auth-avatar').hide();
-        $('#btn-profile').hide();
-        $('#txt-welcome').hide();
-        alertSuccess({content: 'You are not logged in, please login to use more features.'});
-    }
+    // function logout() {
+    //     localStorage.clear();
+    //     $('#loginLink').show();
+    //     $('#img-auth-avatar').hide();
+    //     $('#btn-profile').hide();
+    //     $('#txt-welcome').hide();
+    //     alertSuccess({content: 'You are not logged in, please login to use more features.'});
+    // }
 });
