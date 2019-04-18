@@ -30,6 +30,7 @@ const signup = (req: Request, res: Response) => {
                     expiresIn: config.get('jwt.expired')
                 }
             );
+            console.log(token);
             return Http.SuccessResponse(res, {
                 token: token,
                 user: {
@@ -69,6 +70,7 @@ const signin = (req: Request, res: Response) => {
                     expiresIn: config.get('jwt.expired')
                 }
             );
+            console.log(token);
             return Http.SuccessResponse(res, {
                 token: token,
                 user: {
@@ -107,25 +109,77 @@ const addFriend = (req: Request, res: Response) => {
                     if (data) {
                         return Http.SuccessResponse(res, { msg: 'Success' });
                     }
-                    User.updateOne(
-                        { _id: Types.ObjectId(authUser._id) },
-                        {
-                            $push: {
-                                user_friends: {
-                                    _id: result._id,
-                                    status: 1
+                    // if other also want to add friend with user
+                    User.findOne({
+                        _id: req.params.id,
+                        user_friends: { $elemMatch: { _id: authUser._id } }
+                    }).then(data => {
+                        console.log("phat------" + data)
+                        if (data == null) {
+                            // if other haven't add friend with user yet
+                            User.updateOne(
+                                { _id: Types.ObjectId(authUser._id) },
+                                {
+                                    $push: {
+                                        user_friends: {
+                                            _id: result._id,
+                                            status: 0
+                                        }
+                                    }
                                 }
-                            }
+                            )
+                                .then(rs => {
+                                    return Http.SuccessResponse(res, {
+                                        msg: 'Success'
+                                    });
+                                })
+                                .catch(e => {
+                                    console.error(e);
+                                });
+                        } else {
+                            console.log('She/He also want to add friend you');
+                            User.updateOne(
+                                { _id: Types.ObjectId(authUser._id) },
+                                {
+                                    $push: {
+                                        user_friends: {
+                                            _id: result._id,
+                                            status: 1
+                                        }
+                                    }
+                                }
+                            )
+                                .then(rs => {
+                                    return Http.SuccessResponse(res, {
+                                        msg: 'Success'
+                                    });
+                                })
+                                .catch(e => {
+                                    console.error(e);
+                                });
+
+                            User.updateOne(
+                                { _id: Types.ObjectId(result._id) },
+                                {
+                                    $push: { 
+                                        user_friends: {
+                                         _id: authUser._id,
+                                         status: 1
+                                        }
+                                    }
+                                },
+                                { upsert: true }
+                             )
+                                .then(rs => {
+                                    return Http.SuccessResponse(res, {
+                                        msg: 'Success'
+                                    });
+                                })
+                                .catch(e => {
+                                    console.error(e);
+                                });
                         }
-                    )
-                        .then(rs => {
-                            return Http.SuccessResponse(res, {
-                                msg: 'Success'
-                            });
-                        })
-                        .catch(e => {
-                            console.error(e);
-                        });
+                    });
                 })
                 .catch(e => {
                     console.error(e);
