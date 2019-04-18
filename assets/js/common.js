@@ -29,7 +29,9 @@ $(document).ready(function() {
 
                     $('#search-dropdown').html(usersList);
                     $('#search-dropdown a').on('click', e => {
-                        let username = $(e.target).attr('src');
+                        let username =
+                            $(e.target.parentNode).attr('src') ||
+                            $(e.target).attr('src');
                         $.get({
                             url: `/api/user/${username}/profile`,
                             success: result => {
