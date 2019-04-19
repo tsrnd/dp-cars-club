@@ -29,7 +29,10 @@ const schema: any = new mongoose.Schema({
     avatar_url: String,
     user_friends: [
         {
-            _id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+            _id: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User'
+            },
             status: Number
         }
     ],

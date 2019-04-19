@@ -16,6 +16,11 @@ router.use((req: express.Request, res: express.Response, next: () => void) => {
 router.get('/example', middleware.auth, exampleController.index);
 router.post('/signup', validate(POST_SIGN_UP), userController.signup);
 router.post('/signin', validate(POST_SIGN_IN), userController.signin);
+router.post(
+    '/user/add_friend/:username',
+    middleware.auth,
+    userController.addFriend
+);
 router.get('/search', searchController.search);
 router.get('/user/:username/profile', userController.getProfile);
 

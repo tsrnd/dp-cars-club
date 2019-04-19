@@ -178,3 +178,4 @@ function calculatePopups() {
 //recalculate when window is loaded and also when window is resized.
 $(window).on('resize', calculatePopups);
 $(window).on('load', calculatePopups);
+

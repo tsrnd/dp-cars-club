@@ -5,6 +5,7 @@ import { Md5 } from 'md5-typescript';
 import User from '../../models/user';
 import { validationResult } from 'express-validator/check';
 import * as config from 'config';
+import { Types } from 'mongoose';
 
 const signup = (req: Request, res: Response) => {
     const errors = validationResult(req);
@@ -29,6 +30,7 @@ const signup = (req: Request, res: Response) => {
                     expiresIn: config.get('jwt.expired')
                 }
             );
+            console.log(token);
             return Http.SuccessResponse(res, {
                 token: token,
                 user: {
@@ -68,6 +70,7 @@ const signin = (req: Request, res: Response) => {
                     expiresIn: config.get('jwt.expired')
                 }
             );
+            console.log(token);
             return Http.SuccessResponse(res, {
                 token: token,
                 user: {
@@ -83,6 +86,78 @@ const signin = (req: Request, res: Response) => {
             console.error(err);
             return Http.InternalServerResponse(res);
         });
+};
+
+const addFriend = async (req: Request, res: Response) => {
+    const authUser: any = req.headers.auth_user;
+
+    try {
+        const friend = await User.findOne({ username: req.params.username });
+        if (friend == undefined) {
+            return Http.NotFoundResponse(res, {
+                msg: 'The user no longer exists.'
+            });
+        }
+        if (friend._id.toString() == authUser._id) {
+            return Http.BadRequestResponse(res, {
+                msg: "Can't add friend with your self."
+            });
+        }
+        const isAuthFriend = await User.findOne({
+            _id: authUser._id,
+            user_friends: { $elemMatch: { _id: friend._id } }
+        });
+        if (isAuthFriend) {
+            return Http.SuccessResponse(res, {
+                msg: 'The user has been added earlier.'
+            });
+        }
+        const isTargetFriend = await User.findOne({
+            _id: friend._id,
+            user_friends: { $elemMatch: { _id: authUser._id } }
+        });
+        if (!isTargetFriend) {
+            await User.updateOne(
+                { _id: Types.ObjectId(authUser._id) },
+                {
+                    $push: {
+                        user_friends: {
+                            _id: friend._id,
+                            status: 0
+                        }
+                    }
+                }
+            );
+            return Http.SuccessResponse(res, { msg: 'Suggested, please wait for approval.' });
+        } else {
+            await User.updateOne(
+                { _id: Types.ObjectId(authUser._id) },
+                {
+                    $push: {
+                        user_friends: {
+                            _id: friend._id,
+                            status: 1
+                        }
+                    }
+                }
+            );
+            await User.updateOne(
+                {
+                    _id: Types.ObjectId(friend._id),
+                    user_friends: {
+                        $elemMatch: { _id: Types.ObjectId(authUser._id) }
+                    }
+                },
+                {
+                    $set: { 'user_friends.$.status': 1 }
+                }
+            );
+            return Http.SuccessResponse(res, { msg: 'Added Friend Success.' });
+        }
+    } catch (error) {
+        console.error(error);
+        return Http.InternalServerResponse(res);
+    }
 };
 
 const getProfile = async (req: Request, res: Response) => {
@@ -175,4 +250,4 @@ const getProfile = async (req: Request, res: Response) => {
     }
 };
 
-export { signup, signin, getProfile };
+export { signup, signin, getProfile, addFriend };
