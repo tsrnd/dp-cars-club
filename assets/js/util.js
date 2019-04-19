@@ -6,6 +6,9 @@ function addFriend(username, avatar_url, cursor) {
     $.post({
         url: `/api/user/add_friend/${username}`,
         error: err => {
+            if (err.status == 401) {
+                alert('Please, login.')
+            }
             console.log(err);
         },
         success: res => {
