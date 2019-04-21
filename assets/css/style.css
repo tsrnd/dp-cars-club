@@ -118,6 +118,9 @@ textarea {
   background-color: #fff;
   overflow-y: scroll;
 }
+.popup-messages {
+  vertical-align: bottom;
+}
 
 .popup-input {
   width: 100%;
@@ -341,3 +344,22 @@ body {
   margin-left: 5px;
 }
 
+.self-message {
+  background-color: #333;
+  padding: 3px 7px 3px 7px;
+  color: white;
+  border-radius: 20px;
+}
+
+.friends-message {
+  background-color: lightgray;
+  padding: 3px 7px 3px 7px;
+  color: black;
+  border-radius: 20px;
+}
+
+.avt-chat-message {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}

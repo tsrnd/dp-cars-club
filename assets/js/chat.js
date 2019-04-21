@@ -18,7 +18,7 @@ io.on('refresh-friend-list', data => {
 });
 
 io.on('refresh-friend-status', data => {
-    let exists = false;
+    // let exists = false;
     $('#left-friends-list li').each(function(e) {
         if ($(this).attr('id') == data.user._id) {
             $(this).attr(
@@ -27,12 +27,13 @@ io.on('refresh-friend-status', data => {
             );
             exists = true;
         }
-        if (!exists) {
-            $('#left-friends-list').append(getFriendListForLeftSideBar([data.user]))
-        }
+        // if (!exists) {
+        //     $('#left-friends-list').append(
+        //         getFriendListForLeftSideBar([data.user])
+        //     );
+        // }
     });
 });
-
 
 function getFriendChat(data) {
     return `<div class="chat-message" style="text-align:right;">
@@ -61,11 +62,11 @@ function getFriendListForLeftSideBar(data) {
         }">
             <img src="${
                 e.user.avatar_url
-            }" /><a href="#" onclick="registerPopup('${index + 1}', '${
+            }" /><a href="#" onclick="registerPopup('${e.user.room_id}', '${
             e.user.username
-        }')">${e.user.username}<small class='badge'>${
-            e.status == 1 ? 'active' : 'inactive'
-        }</small></a>
+        }')">${e.user.username}<small id='new-msg-friend-${
+            e.user.room_id
+        }' class='badge'>${e.status == 1 ? 'active' : 'inactive'}</small></a>
         </li>`;
     });
 
@@ -151,6 +152,13 @@ function displayPopups() {
 
 //creates markup for a new popup. Adds the id to popups array.
 function registerPopup(id, name) {
+    prevActiveStatus = $(`#new-msg-friend-${id}`)
+        .parent()
+        .parent()
+        .attr('class')
+        .replace('user-', '');
+    $(`#new-msg-friend-${id}`).html(prevActiveStatus);
+    $(`#new-msg-friend-${id}`).css('background-color', '');
     var newPopup = true;
     for (var iii = 0; iii < popups.length; iii++) {
         //already registered. Bring it to front.
@@ -162,28 +170,6 @@ function registerPopup(id, name) {
     popups.unshift(id);
 
     if (!$(`.popup-box#${id}`).length) {
-        // Example chat messages
-        var chatExamples = `<div class="chat-message"><img style="width:25px;height:25px;" src="https://api.adorable.io/avatars/1" /><span class="chat-all-message"> Hello</span></div>
-                            <div class="chat-message" style="text-align:right;">
-                                <p style="font-size:11px;">Username</p><span class="chat-all-message">Hello </span><img style="width:25px;height:25px;" src="https://api.adorable.io/avatars/2" /></div>
-                            <div class="chat-message"><img style="width:25px;height:25px;" src="https://api.adorable.io/avatars/1" /><span class="chat-all-message"> :)</span></div>
-                            <div class="chat-message"><img style="width:25px;height:25px;" src="https://api.adorable.io/avatars/1" /><span class="chat-all-message"> Hello</span></div>
-                            <div class="chat-message" style="text-align:right;">
-                                <p style="font-size:11px;">Username</p><span class="chat-all-message">Hello </span><img style="width:25px;height:25px;" src="https://api.adorable.io/avatars/2" /></div>
-                            <div class="chat-message"><img style="width:25px;height:25px;" src="https://api.adorable.io/avatars/1" /><span class="chat-all-message"> :)</span></div>
-                            <div class="chat-message"><img style="width:25px;height:25px;" src="https://api.adorable.io/avatars/1" /><span class="chat-all-message"> Hello</span></div>
-                            <div class="chat-message" style="text-align:right;">
-                                <p style="font-size:11px;">Username</p><span class="chat-all-message">Hello </span><img style="width:25px;height:25px;" src="https://api.adorable.io/avatars/2" /></div>
-                            <div class="chat-message"><img style="width:25px;height:25px;" src="https://api.adorable.io/avatars/1" /><span class="chat-all-message"> :)</span></div>
-                            <div class="chat-message"><img style="width:25px;height:25px;" src="https://api.adorable.io/avatars/1" /><span class="chat-all-message"> Hello</span></div>
-                            <div class="chat-message" style="text-align:right;">
-                                <p style="font-size:11px;">Username</p><span class="chat-all-message">Hello </span><img style="width:25px;height:25px;" src="https://api.adorable.io/avatars/2" /></div>
-                            <div class="chat-message"><img style="width:25px;height:25px;" src="https://api.adorable.io/avatars/1" /><span class="chat-all-message"> :)</span></div>
-                            <div class="chat-message"><img style="width:25px;height:25px;" src="https://api.adorable.io/avatars/1" /><span class="chat-all-message"> Hello</span></div>
-                            <div class="chat-message" style="text-align:right;">
-                                <p style="font-size:11px;">Username</p><span class="chat-all-message">Hello </span><img style="width:25px;height:25px;" src="https://api.adorable.io/avatars/2" /></div>
-                            <div class="chat-message"><img style="width:25px;height:25px;" src="https://api.adorable.io/avatars/1" /><span class="chat-all-message"> :)</span></div>`;
-
         var element = `<div class="popup-box" id="${id}">
                             <div class="popup-head">
                                 <div class="popup-head-left">${name}</div>
@@ -192,26 +178,103 @@ function registerPopup(id, name) {
                                 </div>
                                 <div style="clear: both"></div>
                             </div>
-                            <div class="popup-messages">
-                                ${chatExamples}
+                            <div class="popup-messages" id='popup-messages-${id}'>
+                                // chatExamples
                             </div>
-                            <input class="popup-input" type="text" />
+                            <input class="popup-input" type="text" id='input-${id}' />
                         </div>`;
         $('body').append(element);
 
         calculatePopups();
 
-        var chatBox = $(`#${id}`).find('.popup-messages');
-        chatBox.animate(
-            {
-                scrollTop: chatBox.height() + 100
-            },
-            0
-        );
+        // var chatBox = $(`#${id}`).find('.popup-messages');
+        // chatBox.animate(
+        //     {
+        //         scrollTop: chatBox.height() + 100
+        //     },
+        //     0
+        // );
+
+        io.emit('loadMessage', id);
+
+        $(`#input-${id}`).on('keypress', function(e) {
+            if (e.which == 13) {
+                idRoomStr = $(e.target)
+                    .attr('id')
+                    .split('-')[1];
+                messageStr = $(e.target).val();
+                sendMessage({ room_id: idRoomStr, message: messageStr });
+                $(e.target).val('');
+            }
+        });
+
         return;
     }
     calculatePopups();
 }
+io.on('loadMessage', data => {
+    let content = '';
+    if (data.msg.length > 0) {
+        const room_id = data.msg[0].room_id;
+        data.msg.forEach(e => {
+            if (data.auth_user._id == e.user._id) {
+                content =
+                    `<div class="chat-message" style="text-align:right;">
+                        <span class="chat-all-message self-message">${
+                            e.message
+                        }</span>
+                    </div>` + content;
+            } else {
+                content =
+                    `<div class="chat-message">
+                        <p style="font-size:11px;">${e.user.username}</p>
+                        <img class='avt-chat-message' src="${
+                            e.user.avatar_url
+                        }" />
+                        <span class="chat-all-message friends-message">${
+                            e.message
+                        }</span>
+                    </div>` + content;
+            }
+        });
+        $(`#popup-messages-${room_id}`).html(content);
+        $(`#popup-messages-${room_id}`).animate({scrollTop: $(`#popup-messages-${room_id}`).prop("scrollHeight")}, 500)
+    }
+});
+
+io.on('serverMessage', data => {
+    if ($(`.popup-box#${data.room_id}`).is(':visible')) {
+        $(`#popup-messages-${data.room_id}`).append(
+            `<div class="chat-message">
+                <p style="font-size:11px;">${data.from_user.username}</p>
+                <img class='avt-chat-message' src="${
+                    data.from_user.avatar_url
+                }" />
+                <span class="chat-all-message friends-message">${
+                    data.message.content
+                }</span>
+            </div>`
+        );
+        $(`#popup-messages-${data.room_id}`).animate({scrollTop: $(`#popup-messages-${data.room_id}`).prop("scrollHeight")}, 500)
+    } else {
+        $(`#new-msg-friend-${data.room_id}`).html('N');
+        $(`#new-msg-friend-${data.room_id}`).css('background-color', 'red');
+    }
+});
+
+sendMessage = data => {
+    if (data.message.trim()) {
+        io.emit('clientSendMessage', data);
+        $(`#popup-messages-${data.room_id}`).append(
+            `<div class="chat-message" style="text-align:right;">
+                <span class="chat-all-message self-message">${
+                    data.message
+                }</span>
+            </div>`
+        );
+        $(`#popup-messages-${data.room_id}`).animate({scrollTop: $(`#popup-messages-${data.room_id}`).prop("scrollHeight")}, 500)
+    }
+};
 
 //calculate the total number of popups suitable and then populate the toatal_popups variable.
 function calculatePopups() {
