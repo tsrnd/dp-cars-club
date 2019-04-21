@@ -3,6 +3,7 @@ import * as SocketJWT from 'socketio-jwt';
 import * as chatCtrl from '../http/controllers/chat';
 import * as chatHelper from '../http/controllers/chat_helper';
 import * as config from 'config';
+import * as prConst from '../http/controllers/const';
 
 class Socket {
     private server: any;
@@ -33,7 +34,6 @@ class Socket {
             });
             socket.user = auth;
             clients.push(socket);
-            console.log('push', socket.user.username, ' ', socket.id);
             // emit refresh friends list
 
             clients.forEach((e, index) => {
@@ -41,10 +41,14 @@ class Socket {
             });
             chatCtrl.refreshFriendStatus(
                 socket,
-                chatCtrl.STATUS_IS_ACTIVE,
+                prConst.STATUS_IS_ACTIVE,
                 clients
             );
             chatCtrl.refreshFriendsList(socket, clients);
+            chatCtrl.joinRoomAfterSignin(socket);
+            chatCtrl.onSendMessage(socket);
+            chatCtrl.onClientLoadMessage(socket);
+
             // on disconnect
             socket.on('disconnect', () => {
                 const index = clients.findIndex(elem => {
@@ -55,7 +59,7 @@ class Socket {
                 }
                 chatCtrl.refreshFriendStatus(
                     socket,
-                    chatCtrl.STATUS_IS_INACTIVE,
+                    prConst.STATUS_IS_INACTIVE,
                     clients
                 );
             });

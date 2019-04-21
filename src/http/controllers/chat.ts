@@ -1,7 +1,5 @@
 import * as Helper from './chat_helper';
-
-const STATUS_IS_ACTIVE = 1;
-const STATUS_IS_INACTIVE = 0;
+import * as prConst from './const';
 
 const chatAll = (socket: any, data: any) => {
     socket.emit('chatAll', data, true);
@@ -17,9 +15,9 @@ const refreshFriendsList = async (socket: any, clients: any) => {
                 return client.user._id == elem._id.toString();
             }) != -1
         ) {
-            results.push({ user: elem, status: STATUS_IS_ACTIVE });
+            results.push({ user: elem, status: prConst.STATUS_IS_ACTIVE });
         } else {
-            results.push({ user: elem, status: STATUS_IS_INACTIVE });
+            results.push({ user: elem, status: prConst.STATUS_IS_INACTIVE });
         }
     });
     socket.emit('refresh-friend-list', results);
@@ -45,10 +43,46 @@ const refreshFriendStatus = async (
     });
 };
 
+const joinRoomAfterSignin = async (socket: any) => {
+    const rooms = await Helper.getRoomsOfUserById(socket.user._id);
+    rooms.forEach(room => {
+        console.log(`====> ${socket.user.username} >>> ${room._id}`);
+        socket.join(room._id);
+    });
+};
+
+const onSendMessage = (socket: any) => {
+    socket.on('clientSendMessage', async data => {
+        socket.broadcast.to(data.room_id).emit('serverMessage', {
+            room_id: data.room_id,
+            from_user: socket.user,
+            message: {
+                content: data.message,
+                status: prConst.MSG_NOT_YET_SEEN
+            }
+        });
+        await Helper.saveMessage({
+            message: data,
+            user: socket.user
+        });
+    });
+};
+
+const onClientLoadMessage = (socket: any) => {
+    socket.on('loadMessage', async room_id => {
+        const msgs = await Helper.getMessages({
+            room_id: room_id,
+            user: socket.user
+        });
+        socket.emit('loadMessage', { auth_user: socket.user, msg: msgs });
+    });
+};
+
 export {
     chatAll,
     refreshFriendsList,
     refreshFriendStatus,
-    STATUS_IS_ACTIVE,
-    STATUS_IS_INACTIVE
+    joinRoomAfterSignin,
+    onSendMessage,
+    onClientLoadMessage
 };

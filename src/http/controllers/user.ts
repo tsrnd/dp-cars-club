@@ -3,6 +3,7 @@ import * as Http from '../../util/http';
 import * as jwt from 'jsonwebtoken';
 import { Md5 } from 'md5-typescript';
 import User from '../../models/user';
+import Room from '../../models/room';
 import { validationResult } from 'express-validator/check';
 import * as config from 'config';
 import { Types } from 'mongoose';
@@ -128,7 +129,9 @@ const addFriend = async (req: Request, res: Response) => {
                     }
                 }
             );
-            return Http.SuccessResponse(res, { msg: 'Suggested, please wait for approval.' });
+            return Http.SuccessResponse(res, {
+                msg: 'Suggested, please wait for approval.'
+            });
         } else {
             await User.updateOne(
                 { _id: Types.ObjectId(authUser._id) },
@@ -152,6 +155,12 @@ const addFriend = async (req: Request, res: Response) => {
                     $set: { 'user_friends.$.status': 1 }
                 }
             );
+            // create Room
+            const room = new Room({
+                name: authUser.username + ',' + friend.username,
+                users: [Types.ObjectId(authUser._id), Types.ObjectId(friend._id)]
+            });
+            await room.save();
             return Http.SuccessResponse(res, { msg: 'Added Friend Success.' });
         }
     } catch (error) {
