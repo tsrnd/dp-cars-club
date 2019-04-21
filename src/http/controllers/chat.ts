@@ -53,17 +53,18 @@ const joinRoomAfterSignin = async (socket: any) => {
 
 const onSendMessage = (socket: any) => {
     socket.on('clientSendMessage', async data => {
+        const saved = await Helper.saveMessage({
+            message: data,
+            user: socket.user
+        });
         socket.broadcast.to(data.room_id).emit('serverMessage', {
             room_id: data.room_id,
             from_user: socket.user,
             message: {
+                _id: saved._id,
                 content: data.message,
                 status: prConst.MSG_NOT_YET_SEEN
             }
-        });
-        await Helper.saveMessage({
-            message: data,
-            user: socket.user
         });
     });
 };
