@@ -238,7 +238,10 @@ io.on('loadMessage', data => {
             }
         });
         $(`#popup-messages-${room_id}`).html(content);
-        $(`#popup-messages-${room_id}`).animate({scrollTop: $(`#popup-messages-${room_id}`).prop("scrollHeight")}, 500)
+        $(`#popup-messages-${room_id}`).animate(
+            { scrollTop: $(`#popup-messages-${room_id}`).prop('scrollHeight') },
+            500
+        );
     }
 });
 
@@ -255,10 +258,29 @@ io.on('serverMessage', data => {
                 }</span>
             </div>`
         );
-        $(`#popup-messages-${data.room_id}`).animate({scrollTop: $(`#popup-messages-${data.room_id}`).prop("scrollHeight")}, 500)
+        $(`#popup-messages-${data.room_id}`).animate(
+            {
+                scrollTop: $(`#popup-messages-${data.room_id}`).prop(
+                    'scrollHeight'
+                )
+            },
+            500
+        );
     } else {
         $(`#new-msg-friend-${data.room_id}`).html('N');
         $(`#new-msg-friend-${data.room_id}`).css('background-color', 'red');
+        $(`#side-bar-left`).prepend(`
+            <div id='new-msg-${
+                data.message._id
+            }' class='alert alert-info' style="display: none;">
+                <h5>New message from: ${data.from_user.username}</h5>
+                <p>${data.message.content}</p>
+            </div>
+        `);
+        $(`#new-msg-${data.message._id}`)
+            .show('slow')
+            .delay(3000)
+            .hide('slow');
     }
 });
 
@@ -272,7 +294,14 @@ sendMessage = data => {
                 }</span>
             </div>`
         );
-        $(`#popup-messages-${data.room_id}`).animate({scrollTop: $(`#popup-messages-${data.room_id}`).prop("scrollHeight")}, 500)
+        $(`#popup-messages-${data.room_id}`).animate(
+            {
+                scrollTop: $(`#popup-messages-${data.room_id}`).prop(
+                    'scrollHeight'
+                )
+            },
+            500
+        );
     }
 };
 

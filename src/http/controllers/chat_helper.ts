@@ -138,7 +138,7 @@ const saveMessage = async data => {
             },
             status: prConst.MSG_NOT_YET_SEEN
         });
-        await msg.save();
+        return await msg.save();
     } catch (error) {
         console.error(error);
     }
