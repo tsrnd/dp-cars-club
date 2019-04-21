@@ -7,19 +7,69 @@ io.on('connect', function(socket) {
     });
 });
 
+io.on('refresh-friend-list', data => {
+    if (data.length > 0) {
+        $('#left-friends-list').html(getFriendListForLeftSideBar(data));
+    } else {
+        $('#left-friends-list').html(
+            "You don't have friends, <b>let's find friends.</b>"
+        );
+    }
+});
+
+io.on('refresh-friend-status', data => {
+    let exists = false;
+    $('#left-friends-list li').each(function(e) {
+        if ($(this).attr('id') == data.user._id) {
+            $(this).attr(
+                'class',
+                data.status == 1 ? 'user-active' : 'user-inactive'
+            );
+            exists = true;
+        }
+        if (!exists) {
+            $('#left-friends-list').append(getFriendListForLeftSideBar([data.user]))
+        }
+    });
+});
+
+
 function getFriendChat(data) {
     return `<div class="chat-message" style="text-align:right;">
                 <p style="font-size:11px;">${data.auth.username}</p>
                 <span class="chat-all-message">${data.message}</span>
-                <img style="width:25px;height:25px;" src="${data.auth.avatar_url}" />
+                <img style="width:25px;height:25px;" src="${
+                    data.auth.avatar_url
+                }" />
             </div>`;
 }
 
 function getSelfChat(data) {
     return `<div class="chat-message">
-                <img style="width:25px;height:25px;" src="${data.auth.avatar_url}" />
+                <img style="width:25px;height:25px;" src="${
+                    data.auth.avatar_url
+                }" />
                 <span class="chat-all-message"> ${data.message}</span>
             </div>`;
+}
+
+function getFriendListForLeftSideBar(data) {
+    d = '';
+    data.forEach((e, index) => {
+        d += `<li id="${e.user._id}" class="${
+            e.status == 1 ? 'user-active' : 'user-inactive'
+        }">
+            <img src="${
+                e.user.avatar_url
+            }" /><a href="#" onclick="registerPopup('${index + 1}', '${
+            e.user.username
+        }')">${e.user.username}<small class='badge'>${
+            e.status == 1 ? 'active' : 'inactive'
+        }</small></a>
+        </li>`;
+    });
+
+    return d;
 }
 
 // CHAT ALL
@@ -178,4 +228,3 @@ function calculatePopups() {
 //recalculate when window is loaded and also when window is resized.
 $(window).on('resize', calculatePopups);
 $(window).on('load', calculatePopups);
-

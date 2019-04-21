@@ -25,6 +25,8 @@ function addFriend(username, avatar_url, cursor) {
                 '#left-friends-list li'
             ).length + 1}', '${username}')">${username}</a>
             </li>`);
+            io.disconnect();
+            io.connect();
             $('#profile-modal').modal('toggle');
         }
     });

@@ -323,3 +323,21 @@ body {
   margin: auto;
   margin-top: 20px;
 }
+
+#left-friends-list {
+  list-style: none;
+}
+.user-active small {
+  background-color: darkgreen;
+  margin-left: 5px;
+}
+
+.user-inactive a {
+  color: darkgray;
+}
+
+.user-inactive small {
+  background-color: darkgrey;
+  margin-left: 5px;
+}
+
