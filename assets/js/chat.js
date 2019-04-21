@@ -179,7 +179,7 @@ function registerPopup(id, name) {
                                 <div style="clear: both"></div>
                             </div>
                             <div class="popup-messages" id='popup-messages-${id}'>
-                                // chatExamples
+
                             </div>
                             <input class="popup-input" type="text" id='input-${id}' />
                         </div>`;
