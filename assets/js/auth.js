@@ -90,15 +90,6 @@ $(document).ready(function() {
                 $('#img-auth-avatar')
                     .attr('src', result.user.avatar_url)
                     .show();
-                if (result.user.user_friends.length > 0) {
-                    $('#left-friends-list').html(
-                        getFriendListForLeftSideBar(result.user.user_friends)
-                    );
-                } else {
-                    $('#left-friends-list').html(
-                        "You don't have friends, <b>let's find friends.</b>"
-                    );
-                }
                 $('#left-requests-list').html('Comming soon')
                 $('#left-groups-list').html('Comming soon')
             },
@@ -108,21 +99,6 @@ $(document).ready(function() {
                 }
             }
         });
-    }
-
-    function getFriendListForLeftSideBar(data) {
-        d = '';
-        data.forEach((e, index) => {
-            d += `<li>
-                <img src="${
-                    e.avatar_url
-                }" /><a href="#" onclick="registerPopup('${index + 1}', '${
-                e.username
-            }')">${e.username}</a>
-            </li>`;
-        });
-
-        return d;
     }
 
     function requestSetting(token) {

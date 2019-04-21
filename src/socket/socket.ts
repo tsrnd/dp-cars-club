@@ -1,7 +1,9 @@
 import * as SocketIO from 'socket.io';
 import * as SocketJWT from 'socketio-jwt';
-import * as chat from '../http/controllers/chat';
+import * as chatCtrl from '../http/controllers/chat';
+import * as chatHelper from '../http/controllers/chat_helper';
 import * as config from 'config';
+import * as prConst from '../http/controllers/const';
 
 class Socket {
     private server: any;
@@ -15,19 +17,53 @@ class Socket {
 
     private config() {
         const io = this.io;
+        const clients = [];
 
-        io.on('connection',
+        io.on(
+            'connection',
             SocketJWT.authorize({
                 secret: config.get('jwt.secret_key'),
                 required: false
             })
-        ).on('authenticated', async function (socket: any) {
-            const auth = await chat.getAuth(socket.decoded_token.id);
+        ).on('authenticated', async function(socket: any) {
+            const auth = await chatHelper.getAuth(socket.decoded_token.id);
 
-            socket.on('chatAll', function (data: any) {
+            socket.on('chatAll', function(data: any) {
                 data.auth = auth;
-                chat.chatAll(socket, data);
+                chatCtrl.chatAll(socket, data);
             });
+            socket.user = auth;
+            clients.push(socket);
+            // emit refresh friends list
+
+            clients.forEach((e, index) => {
+                console.log(e.user.username, index);
+            });
+            chatCtrl.refreshFriendStatus(
+                socket,
+                prConst.STATUS_IS_ACTIVE,
+                clients
+            );
+            chatCtrl.refreshFriendsList(socket, clients);
+            chatCtrl.joinRoomAfterSignin(socket);
+            chatCtrl.onSendMessage(socket);
+            chatCtrl.onClientLoadMessage(socket);
+
+            // on disconnect
+            socket.on('disconnect', () => {
+                const index = clients.findIndex(elem => {
+                    return elem.id == socket.id;
+                });
+                if (index != -1) {
+                    clients.splice(index, 1);
+                }
+                chatCtrl.refreshFriendStatus(
+                    socket,
+                    prConst.STATUS_IS_INACTIVE,
+                    clients
+                );
+            });
+            socket.on;
         });
     }
 
