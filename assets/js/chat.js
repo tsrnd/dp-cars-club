@@ -187,14 +187,6 @@ function registerPopup(id, name) {
 
         calculatePopups();
 
-        // var chatBox = $(`#${id}`).find('.popup-messages');
-        // chatBox.animate(
-        //     {
-        //         scrollTop: chatBox.height() + 100
-        //     },
-        //     0
-        // );
-
         io.emit('loadMessage', id);
 
         $(`#input-${id}`).on('keypress', function(e) {
@@ -210,6 +202,10 @@ function registerPopup(id, name) {
 
         return;
     }
+    $(`#popup-messages-${id}`).animate(
+        { scrollTop: $(`#popup-messages-${id}`).prop('scrollHeight') },
+        500
+    );
     calculatePopups();
 }
 io.on('loadMessage', data => {
@@ -246,18 +242,18 @@ io.on('loadMessage', data => {
 });
 
 io.on('serverMessage', data => {
-    if ($(`.popup-box#${data.room_id}`).is(':visible')) {
-        $(`#popup-messages-${data.room_id}`).append(
-            `<div class="chat-message">
-                <p style="font-size:11px;">${data.from_user.username}</p>
-                <img class='avt-chat-message' src="${
-                    data.from_user.avatar_url
-                }" />
-                <span class="chat-all-message friends-message">${
-                    data.message.content
-                }</span>
-            </div>`
+    $(`#popup-messages-${data.room_id}`).append(
+        `<div class="chat-message">
+            <p style="font-size:11px;">${data.from_user.username}</p>
+            <img class='avt-chat-message' src="${
+                data.from_user.avatar_url
+            }" />
+            <span class="chat-all-message friends-message">${
+                data.message.content
+            }</span>
+        </div>`
         );
+    if ($(`.popup-box#${data.room_id}`).is(':visible')) {
         $(`#popup-messages-${data.room_id}`).animate(
             {
                 scrollTop: $(`#popup-messages-${data.room_id}`).prop(
